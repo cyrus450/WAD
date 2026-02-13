@@ -1,0 +1,143 @@
+CREATE DATABASE SolarDB;
+USE SolarDB;
+
+CREATE TABLE Vendor (
+    ->     vendor_id VARCHAR(15) PRIMARY KEY,
+    ->     vendor_name VARCHAR(50),
+    ->     address VARCHAR(100),
+    ->     contact_no VARCHAR(15)
+    -> );
+
+CREATE TABLE User (
+    ->     user_id INT PRIMARY KEY,
+    ->     house_office_no VARCHAR(20),
+    ->     address VARCHAR(100),
+    ->     usage_type VARCHAR(20),
+    ->     number_of_members INT
+    -> );
+
+CREATE TABLE Solar_Panel (
+    ->     panel_id VARCHAR(20) PRIMARY KEY,
+    ->     panel_type VARCHAR(30),
+    ->     capacity INT,
+    ->     warranty_years INT,
+    ->     cost DECIMAL(10,2)
+    -> );
+
+CREATE TABLE Installation (
+    ->     installation_id INT PRIMARY KEY,
+    ->     installation_date DATE,
+    ->     panel_id VARCHAR(20),
+    ->     vendor_id VARCHAR(15),
+    ->     user_id INT,
+    ->     FOREIGN KEY (panel_id) REFERENCES Solar_Panel(panel_id),
+    ->     FOREIGN KEY (vendor_id) REFERENCES Vendor(vendor_id),
+    ->     FOREIGN KEY (user_id) REFERENCES User(user_id)
+    -> );
+
+INSERT INTO Vendor VALUES
+    -> ('TIN101', 'SolarTech Pvt Ltd', 'Bangalore', '9876543210'),
+    -> ('TIN102', 'GreenPower Ltd', 'Chennai', '9123456780');
+
+INSERT INTO User VALUES
+    -> (1, 'H-12', 'Bangalore', 'Domestic', 4),
+    -> (2, 'O-22', 'Chennai', 'Commercial', 15);
+
+INSERT INTO Solar_Panel VALUES
+    -> ('PV001', 'Monocrystalline', 5, 15, 40000),
+    -> ('PV002', 'Polycrystalline', 8, 25, 60000);
+
+INSERT INTO Installation VALUES
+    -> (101, '2026-01-15', 'PV001', 'TIN101', 1),
+    -> (102, '2026-01-20', 'PV002', 'TIN102', 2);
+
+SELECT * FROM Vendor;
+SELECT * FROM User;
+SELECT * FROM Solar_Panel;
+SELECT * FROM Installation;
+
+
+--Q-1
+
+SELECT 
+    ->     v.vendor_name AS "Name",
+    ->     u.usage_type AS "Installation Type"
+    -> FROM Vendor v
+    -> JOIN Installation i ON v.vendor_id = i.vendor_id
+    -> JOIN User u ON i.user_id = u.user_id
+    -> WHERE u.usage_type = 'Domestic'
+    -> GROUP BY v.vendor_id
+    -> HAVING COUNT(i.installation_id) = (
+    ->     SELECT MAX(cnt)
+    ->     FROM (
+    ->         SELECT COUNT(i2.installation_id) AS cnt
+    ->         FROM Installation i2
+    ->         JOIN User u2 ON i2.user_id = u2.user_id
+    ->         WHERE u2.usage_type = 'Domestic'
+    ->         GROUP BY i2.vendor_id
+    ->     ) AS temp
+    -> );
+
+
+-- Q-2
+
+SELECT 
+    u.address AS "Name",
+    MAX(sp.capacity) AS "Max Capacity"
+FROM Solar_Panel sp
+JOIN Installation i ON sp.panel_id = i.panel_id
+JOIN User u ON i.user_id = u.user_id
+GROUP BY u.address
+HAVING MAX(sp.capacity) = (
+    SELECT MAX(capacity)
+    FROM Solar_Panel
+);
+
+--Q-3
+
+SELECT 
+    u.address AS "Area",
+    sp.panel_type AS "Pv_type"
+FROM Solar_Panel sp
+JOIN Installation i ON sp.panel_id = i.panel_id
+JOIN User u ON i.user_id = u.user_id
+WHERE sp.panel_type = 'Monocrystalline';
+
+--Q-4
+
+SELECT 
+    SUM(sp.cost) AS "Total_Installation_Charges",
+    u.address AS "Area"
+FROM Solar_Panel sp
+JOIN Installation i ON sp.panel_id = i.panel_id
+JOIN User u ON i.user_id = u.user_id
+WHERE u.address = 'Bangalore'
+GROUP BY u.address;
+
+--Q-5
+
+SELECT 
+    v.vendor_name AS "Name",
+    sp.panel_id AS "pv_module",
+    sp.cost AS "price",
+    sp.panel_type AS "pv_type",
+    sp.capacity AS "capacity",
+    i.installation_date AS "installation_date"
+FROM Vendor v
+JOIN Installation i ON v.vendor_id = i.vendor_id
+JOIN Solar_Panel sp ON i.panel_id = sp.panel_id
+WHERE i.installation_date = (
+    SELECT MIN(installation_date)
+    FROM Installation
+);
+
+--Q-6
+
+SELECT 
+    sp.panel_type AS "Installation Type",
+    AVG(sp.cost) AS "Average installation charge"
+FROM Solar_Panel sp
+JOIN Installation i ON sp.panel_id = i.panel_id
+JOIN User u ON i.user_id = u.user_id
+WHERE u.usage_type = 'Commercial'
+GROUP BY sp.panel_type;
