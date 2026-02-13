@@ -1,0 +1,208 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Registration Form</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="bg-light">
+    <div class="container mt-5">
+      <div class="card p-4 shadow">
+        <h3 class="text-center mb-4">Registration Form</h3>
+
+        <form id="regForm">
+          <!-- Full Name -->
+          <div class="mb-3">
+            <label class="form-label">Full Name</label>
+            <input type="text" id="name" class="form-control" />
+          </div>
+
+          <!-- Username -->
+          <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input type="text" id="username" class="form-control" />
+          </div>
+
+          <!-- Email -->
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="text" id="email" class="form-control" />
+          </div>
+
+          <!-- Mobile -->
+          <div class="mb-3">
+            <label class="form-label">Mobile</label>
+            <input type="text" id="mobile" class="form-control" />
+          </div>
+
+          <!-- DOB -->
+          <div class="mb-3">
+            <label class="form-label">Date of Birth</label>
+            <input type="date" id="dob" class="form-control" />
+          </div>
+
+          <!-- Age -->
+          <div class="mb-3">
+            <label class="form-label">Age</label>
+            <input type="text" id="age" class="form-control" readonly />
+          </div>
+
+          <!-- Password -->
+          <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="password" id="password" class="form-control" />
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="mb-3">
+            <label class="form-label">Confirm Password</label>
+            <input type="password" id="confirmPassword" class="form-control" />
+          </div>
+
+          <!-- Gender -->
+          <div class="mb-3">
+            <label class="form-label">Gender</label><br />
+            <input type="radio" name="gender" value="Male" /> Male
+            <input type="radio" name="gender" value="Female" /> Female
+          </div>
+
+          <!-- Skills -->
+          <div class="mb-3">
+            <label class="form-label">Skills</label><br />
+            <input type="checkbox" name="skill" value="HTML" /> HTML
+            <input type="checkbox" name="skill" value="CSS" /> CSS
+            <input type="checkbox" name="skill" value="JavaScript" /> JavaScript
+          </div>
+
+          <!-- Address -->
+          <div class="mb-3">
+            <label class="form-label">Address</label>
+            <textarea id="address" class="form-control"></textarea>
+          </div>
+
+          <!-- City -->
+          <div class="mb-3">
+            <label class="form-label">City</label>
+            <select id="city" class="form-control">
+              <option value="">Select City</option>
+              <option>Bangalore</option>
+              <option>Chennai</option>
+              <option>Mumbai</option>
+              <option>Delhi</option>
+            </select>
+          </div>
+
+          <!-- State -->
+          <div class="mb-3">
+            <label class="form-label">State</label>
+            <input type="text" id="state" class="form-control" />
+          </div>
+
+          <!-- Pincode -->
+          <div class="mb-3">
+            <label class="form-label">Pincode</label>
+            <input type="text" id="pincode" class="form-control" />
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100">Submit</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      const form = document.getElementById("regForm");
+
+      document.getElementById("dob").onchange = function () {
+        let dob = new Date(this.value);
+        let today = new Date();
+        let age = today.getFullYear() - dob.getFullYear();
+        document.getElementById("age").value = age;
+      };
+
+      form.onsubmit = function (e) {
+        e.preventDefault();
+
+        let name = document.getElementById("name").value.trim();
+        let username = document.getElementById("username").value.trim();
+        let email = document.getElementById("email").value.trim();
+        let mobile = document.getElementById("mobile").value.trim();
+        let password = document.getElementById("password").value.trim();
+        let confirmPassword = document.getElementById("confirmPassword").value.trim();
+        let address = document.getElementById("address").value.trim();
+        let city = document.getElementById("city").value;
+        let state = document.getElementById("state").value.trim();
+        let pincode = document.getElementById("pincode").value.trim();
+
+        let gender = document.querySelector('input[name="gender"]:checked');
+        let skills = document.querySelectorAll('input[name="skill"]:checked');
+
+        // Regular Expressions
+        let nameRegex = /^[A-Za-z ]{3,}$/;
+        let usernameRegex = /^[A-Za-z0-9_]{4,}$/;
+        let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        let mobileRegex = /^[6-9]\d{9}$/;
+        let passwordRegex = /^(?=.*[A-Z])(?=.*\d).{6,}$/;
+        let pincodeRegex = /^\d{6}$/;
+
+        if (!nameRegex.test(name)) {
+          alert("Invalid Name");
+          return;
+        }
+
+        if (!usernameRegex.test(username)) {
+          alert("Username must be 4+ characters");
+          return;
+        }
+
+        if (!emailRegex.test(email)) {
+          alert("Invalid Email");
+          return;
+        }
+
+        if (!mobileRegex.test(mobile)) {
+          alert("Invalid Mobile Number");
+          return;
+        }
+
+        if (!passwordRegex.test(password)) {
+          alert("Weak Password");
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          alert("Passwords do not match");
+          return;
+        }
+
+        if (!gender) {
+          alert("Select Gender");
+          return;
+        }
+
+        if (skills.length === 0) {
+          alert("Select at least one skill");
+          return;
+        }
+
+        if (address === "" || city === "" || state === "") {
+          alert("Fill Address Details");
+          return;
+        }
+
+        if (!pincodeRegex.test(pincode)) {
+          alert("Invalid Pincode");
+          return;
+        }
+
+        alert("Registration Successful!");
+        this.reset();
+      };
+    </script>
+  </body>
+</html>
