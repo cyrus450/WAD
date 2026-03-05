@@ -6,9 +6,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body { padding: 20px; }
-        .book-card { margin-bottom: 20px; }
-        .section-page { display: none; }
-        .section-page.active { display: block; }
+        .page { display: none; }
+        .page.active { display: block; }
     </style>
 </head>
 <body>
@@ -19,106 +18,72 @@
 </header>
 
 <nav class="text-center mb-3">
-    <a href="#" class="me-3" onclick="showSection('home')">HOME</a>
-    <a href="#" class="me-3" onclick="showSection('catalogue')">CATALOGUE</a>
-    <a href="#" class="me-3" onclick="showSection('profile')">PROFILE</a>
-    <a href="#" onclick="showSection('contact')">CONTACT US!</a>
+    <a href="#" class="me-3" onclick="show('home')">HOME</a>
+    <a href="#" class="me-3" onclick="show('catalogue')">CATALOGUE</a>
+    <a href="#" class="me-3" onclick="show('profile')">PROFILE</a>
+    <a href="#" onclick="show('contact')">CONTACT US!</a>
 </nav>
 <hr>
 
 <main>
 
-    <!-- HOME SECTION -->
-    <div id="home" class="section-page active">
-        <section>
-            <h3>PRICE OF BOOKS!</h3>
-            <p><strong>Total Books Added to Cart:</strong> <span id="cartCount">0</span></p>
+    <!-- HOME -->
+    <div id="home" class="page active">
+        <h3>PRICE OF BOOKS!</h3>
+        <p><strong>Cart Count:</strong> <span id="cartCount">0</span></p>
+        <p id="cartSummary"></p>
 
-            <article class="card book-card">
-                <div class="card-body">
-                    <h4>DISCRETE MATHEMATICS</h4>
-                    <p>PRICE: $300</p>
-                    <button class="btn btn-primary" onclick="addToCart('Discrete Mathematics', 300)">ADD TO CART</button>
-                    <button class="btn btn-success" onclick="buyNow('Discrete Mathematics', 300)">BUY NOW</button>
-                </div>
-            </article>
+        <div class="card mb-3"><div class="card-body">
+            <h5>DISCRETE MATHEMATICS — $300</h5>
+            <button class="btn btn-primary btn-sm" onclick="addToCart('Discrete Mathematics',300)">ADD TO CART</button>
+            <button class="btn btn-success btn-sm" onclick="buyNow('Discrete Mathematics',300)">BUY NOW</button>
+        </div></div>
 
-            <article class="card book-card">
-                <div class="card-body">
-                    <h4>DATA SCIENCE</h4>
-                    <p>PRICE: $299</p>
-                    <button class="btn btn-primary" onclick="addToCart('Data Science', 299)">ADD TO CART</button>
-                    <button class="btn btn-success" onclick="buyNow('Data Science', 299)">BUY NOW</button>
-                </div>
-            </article>
+        <div class="card mb-3"><div class="card-body">
+            <h5>DATA SCIENCE — $299</h5>
+            <button class="btn btn-primary btn-sm" onclick="addToCart('Data Science',299)">ADD TO CART</button>
+            <button class="btn btn-success btn-sm" onclick="buyNow('Data Science',299)">BUY NOW</button>
+        </div></div>
 
-            <article class="card book-card">
-                <div class="card-body">
-                    <h4>WEB APPLICATION DEVELOPMENT</h4>
-                    <p>PRICE: $499</p>
-                    <button class="btn btn-primary" onclick="addToCart('Web Application Development', 499)">ADD TO CART</button>
-                    <button class="btn btn-success" onclick="buyNow('Web Application Development', 499)">BUY NOW</button>
-                </div>
-            </article>
-
-            <div id="cartSummary" class="mt-2"></div>
-        </section>
+        <div class="card mb-3"><div class="card-body">
+            <h5>WEB APPLICATION DEVELOPMENT — $499</h5>
+            <button class="btn btn-primary btn-sm" onclick="addToCart('Web Application Development',499)">ADD TO CART</button>
+            <button class="btn btn-success btn-sm" onclick="buyNow('Web Application Development',499)">BUY NOW</button>
+        </div></div>
     </div>
 
-    <!-- CATALOGUE SECTION -->
-    <div id="catalogue" class="section-page">
-        <section>
-            <h3>BOOK CATALOGUE</h3>
-            <table class="table table-bordered">
-                <thead class="table-dark">
-                    <tr><th>#</th><th>Title</th><th>Author</th><th>Price</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>1</td><td>Discrete Mathematics</td><td>K.H. Rosen</td><td>$300</td></tr>
-                    <tr><td>2</td><td>Data Science</td><td>J. Kelleher</td><td>$299</td></tr>
-                    <tr><td>3</td><td>Web Application Development</td><td>J. Jackson</td><td>$499</td></tr>
-                </tbody>
-            </table>
-        </section>
+    <!-- CATALOGUE -->
+    <div id="catalogue" class="page">
+        <h3>BOOK CATALOGUE</h3>
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr><th>#</th><th>Title</th><th>Author</th><th>Price</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>1</td><td>Discrete Mathematics</td><td>K.H. Rosen</td><td>$300</td></tr>
+                <tr><td>2</td><td>Data Science</td><td>J. Kelleher</td><td>$299</td></tr>
+                <tr><td>3</td><td>Web Application Development</td><td>J. Jackson</td><td>$499</td></tr>
+            </tbody>
+        </table>
     </div>
 
-    <!-- PROFILE SECTION -->
-    <div id="profile" class="section-page">
-        <section>
-            <h3>USER PROFILE</h3>
-            <table class="table table-bordered w-50">
-                <tr><th>Name</th><td>John Doe</td></tr>
-                <tr><th>Email</th><td>john@email.com</td></tr>
-                <tr><th>Phone</th><td>+91 98765 43210</td></tr>
-                <tr><th>Total Orders</th><td>5</td></tr>
-            </table>
-        </section>
+    <!-- PROFILE -->
+    <div id="profile" class="page">
+        <h3>USER PROFILE</h3>
+        <table class="table table-bordered w-50">
+            <tr><th>Name</th><td>John Doe</td></tr>
+            <tr><th>Email</th><td>john@email.com</td></tr>
+            <tr><th>Phone</th><td>+91 98765 43210</td></tr>
+            <tr><th>Orders</th><td>5</td></tr>
+        </table>
     </div>
 
-    <!-- CONTACT SECTION -->
-    <div id="contact" class="section-page">
-        <section>
-            <h3>CONTACT US</h3>
-            <p><strong>Address:</strong> 123, Book Street, Bengaluru - 560001</p>
-            <p><strong>Phone:</strong> +91 98765 43210</p>
-            <p><strong>Email:</strong> support@mktbookstore.com</p>
-            <hr>
-            <h5>Send a Message</h5>
-            <div class="mb-2">
-                <label>Name:</label>
-                <input type="text" id="cName" class="form-control w-50" placeholder="Your name"/>
-            </div>
-            <div class="mb-2">
-                <label>Email:</label>
-                <input type="email" id="cEmail" class="form-control w-50" placeholder="Your email"/>
-            </div>
-            <div class="mb-2">
-                <label>Message:</label>
-                <textarea id="cMsg" class="form-control w-50" rows="3" placeholder="Your message"></textarea>
-            </div>
-            <button class="btn btn-primary" onclick="submitContact()">SUBMIT</button>
-            <div id="contactMsg" class="mt-2"></div>
-        </section>
+    <!-- CONTACT -->
+    <div id="contact" class="page">
+        <h3>CONTACT US</h3>
+        <p><strong>Address:</strong> 123, Book Street, Bengaluru - 560001</p>
+        <p><strong>Phone:</strong> +91 98765 43210</p>
+        <p><strong>Email:</strong> support@mktbookstore.com</p>
     </div>
 
 </main>
@@ -128,50 +93,23 @@
 </footer>
 
 <script>
-    // Inventory object with nesting
-    let inventory = {
-        cart: [],
-        totalItems: 0
-    };
+    let inventory = { cart: [], totalItems: 0 };
 
-    // Show/hide sections - DOM manipulation
-    function showSection(id) {
-        document.querySelectorAll('.section-page').forEach(function(sec) {
-            sec.classList.remove('active');
-        });
+    function show(id) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(id).classList.add('active');
     }
 
-    function addToCart(bookName, price) {
-        // Creating object dynamically and nesting inside inventory
-        let book = { name: bookName, price: price };
-        inventory.cart.push(book);
+    function addToCart(name, price) {
+        inventory.cart.push({ name: name, price: price });
         inventory.totalItems++;
-
-        // DOM manipulation
         document.getElementById("cartCount").textContent = inventory.totalItems;
-        document.getElementById("cartSummary").innerHTML =
-            "<strong>Cart:</strong> " + inventory.cart.map(function(b){ return b.name; }).join(", ");
-
-        console.log("Cart:", inventory.cart);
+        document.getElementById("cartSummary").textContent = "Cart: " + inventory.cart.map(b => b.name).join(", ");
     }
 
-    function buyNow(bookName, price) {
-        addToCart(bookName, price);
-        alert("You selected BUY NOW for " + bookName);
-    }
-
-    function submitContact() {
-        let name = document.getElementById("cName").value.trim();
-        let email = document.getElementById("cEmail").value.trim();
-        let msg = document.getElementById("cMsg").value.trim();
-
-        if (!name || !email || !msg) {
-            document.getElementById("contactMsg").innerHTML = "<span class='text-danger'>Please fill all fields.</span>";
-            return;
-        }
-        document.getElementById("contactMsg").innerHTML = "<span class='text-success'>Thank you, " + name + "! We will contact you shortly.</span>";
-        console.log("Contact submitted:", { name: name, email: email, message: msg });
+    function buyNow(name, price) {
+        addToCart(name, price);
+        alert("BUY NOW: " + name);
     }
 </script>
 
