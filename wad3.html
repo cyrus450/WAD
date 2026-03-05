@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+<div class="card p-4 shadow">
+    <h3 class="text-center mb-4">Registration Form</h3>
+    <form id="regForm">
+
+        <div class="mb-3">
+            <label>Full Name</label>
+            <input type="text" id="name" class="form-control" placeholder="Full Name"/>
+        </div>
+        <div class="mb-3">
+            <label>Username</label>
+            <input type="text" id="username" class="form-control" placeholder="Username"/>
+        </div>
+        <div class="mb-3">
+            <label>Email</label>
+            <input type="text" id="email" class="form-control" placeholder="Email"/>
+        </div>
+        <div class="mb-3">
+            <label>Mobile</label>
+            <input type="text" id="mobile" class="form-control" placeholder="Mobile"/>
+        </div>
+        <div class="mb-3">
+            <label>Date of Birth</label>
+            <input type="date" id="dob" class="form-control" onchange="calcAge()"/>
+        </div>
+        <div class="mb-3">
+            <label>Age</label>
+            <input type="text" id="age" class="form-control" readonly/>
+        </div>
+        <div class="mb-3">
+            <label>Password</label>
+            <input type="password" id="password" class="form-control" placeholder="Password"/>
+        </div>
+        <div class="mb-3">
+            <label>Confirm Password</label>
+            <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm Password"/>
+        </div>
+        <div class="mb-3">
+            <label>Gender</label><br/>
+            <input type="radio" name="gender" value="Male"/> Male &nbsp;
+            <input type="radio" name="gender" value="Female"/> Female
+        </div>
+        <div class="mb-3">
+            <label>Skills</label><br/>
+            <input type="checkbox" name="skill" value="HTML"/> HTML &nbsp;
+            <input type="checkbox" name="skill" value="CSS"/> CSS &nbsp;
+            <input type="checkbox" name="skill" value="JavaScript"/> JavaScript
+        </div>
+        <div class="mb-3">
+            <label>Address</label>
+            <textarea id="address" class="form-control"></textarea>
+        </div>
+        <div class="mb-3">
+            <label>City</label>
+            <select id="city" class="form-control">
+                <option value="">Select City</option>
+                <option>Bangalore</option>
+                <option>Chennai</option>
+                <option>Mumbai</option>
+                <option>Delhi</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label>State</label>
+            <input type="text" id="state" class="form-control" placeholder="State"/>
+        </div>
+        <div class="mb-3">
+            <label>Pincode</label>
+            <input type="text" id="pincode" class="form-control" placeholder="Pincode"/>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Submit</button>
+    </form>
+</div>
+</div>
+
+<script>
+    function calcAge() {
+        let dob = new Date(document.getElementById("dob").value);
+        document.getElementById("age").value = new Date().getFullYear() - dob.getFullYear();
+    }
+
+    document.getElementById("regForm").onsubmit = function(e) {
+        e.preventDefault();
+
+        let v = {
+            name:     document.getElementById("name").value.trim(),
+            username: document.getElementById("username").value.trim(),
+            email:    document.getElementById("email").value.trim(),
+            mobile:   document.getElementById("mobile").value.trim(),
+            password: document.getElementById("password").value.trim(),
+            confirm:  document.getElementById("confirmPassword").value.trim(),
+            address:  document.getElementById("address").value.trim(),
+            city:     document.getElementById("city").value,
+            state:    document.getElementById("state").value.trim(),
+            pincode:  document.getElementById("pincode").value.trim()
+        };
+
+        let gender = document.querySelector('input[name="gender"]:checked');
+        let skills = document.querySelectorAll('input[name="skill"]:checked');
+
+        if (!/^[A-Za-z ]{3,}$/.test(v.name))               { alert("Invalid Name");               return; }
+        if (!/^[A-Za-z0-9_]{4,}$/.test(v.username))         { alert("Username must be 4+ chars");   return; }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email))    { alert("Invalid Email");               return; }
+        if (!/^[6-9]\d{9}$/.test(v.mobile))                 { alert("Invalid Mobile");              return; }
+        if (!/^(?=.*[A-Z])(?=.*\d).{6,}$/.test(v.password)) { alert("Weak Password");               return; }
+        if (v.password !== v.confirm)                        { alert("Passwords do not match");      return; }
+        if (!gender)                                         { alert("Select Gender");               return; }
+        if (skills.length === 0)                             { alert("Select at least one skill");   return; }
+        if (!v.address || !v.city || !v.state)               { alert("Fill Address Details");        return; }
+        if (!/^\d{6}$/.test(v.pincode))                     { alert("Invalid Pincode");             return; }
+
+        alert("Registration Successful!");
+        this.reset();
+    };
+</script>
+</body>
+</html>
